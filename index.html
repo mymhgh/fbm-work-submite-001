@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Form</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="form-container">
+    <h2>Work Submit --</h2>
+    
+    <!-- First Set -->
+    <div class="form-group">
+      <div class="form-item">
+        <label for="account-type">Account Type:</label>
+        <select id="account-type" required>
+          <option disabled selected>Select</option>
+          <option>Facebook</option>
+          <option disabled>Gmail</option>
+          <option disabled>Telegram</option>
+          <option disabled>Whatsapp</option>
+          <option disabled>Inatagram</option>
+          <option disabled>Tweeter</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <label for="mail-box">Mail Box:</label>
+        <select id="mail-box" required>
+          <option disabled selected>Select</option>
+          <option>1Sec Mail</option>
+          <option>Temp Mail</option>
+          <option>Any Mail</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Second Set -->
+    <div class="form-group">
+      <div class="form-item">
+        <label for="2fa-cookie">2FA-Cook</label>
+        <select id="2fa-cookie">
+          <option disabled selected>Select</option>
+          <option value="2FA">2FA</option>
+          <option value="Cookies">Cookies</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <label for="fd-tpe">FD:</label>
+        <select id="fd-type">
+          <option disabled selected>Select</option>
+          <option value="0FD">0+Fd</option>
+          <option value="30FD">30+Fd</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <label for="ttl-id">Total Id:</label>
+        <input type="text" id="ttl-id" placeholder="Total Id" maxlength="4">
+      </div>
+    </div>
+
+    <!-- Third Set -->
+    <div class="form-group">
+      <div class="form-item">
+        <label for="tg-username">Tg Username:</label>
+        <input type="text" id="tg-username" placeholder="Username">
+      </div>
+      <div class="form-item">
+        <label for="tg-chat-id">Tg Chat Id:</label>
+        <input type="text" id="tg-chat-id" placeholder="Chat ID" maxlength="10">
+      </div>
+    </div>
+
+    <!-- Single Input -->
+    <div class="form-single">
+      <label for="google-sheet">Google Sheet Link:</label>
+      <input type="url" id="google-sheet" placeholder="Paste Link Here">
+    </div>
+
+    <button type="submit" id="submit-btn">Submit</button>
+  </div>
+  
+</div>
+
+
+<!-- ✅ কাস্টম পপ-আপ -->
+<div id="custom-alert" class="hidden">
+    <div class="alert-box">
+        <p id="alert-message"></p>
+        <button id="alert-ok">OK</button>
+    </div>
+</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
