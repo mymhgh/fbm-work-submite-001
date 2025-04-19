@@ -1,4 +1,3 @@
-
 document.getElementById("account-type").addEventListener("change", function () { 
     const accountType = this.value.toLowerCase(); 
     const mailBox = document.getElementById("mail-box"); 
@@ -49,9 +48,62 @@ document.getElementById("submit-btn").addEventListener("click", function () {
     const cookie2fa = document.getElementById("2fa-cookie").value.trim();
     const fdType = document.getElementById("fd-type").value || " "; 
     const ttlId = document.getElementById("ttl-id").value; 
-    const tgUsername = document.getElementById("tg-username").value; 
+    const tgUsername = document.getElementById("tg-username").value.trim(); // ইউজারনেমটি ট্রিম করা হচ্ছে
     const tgChatId = document.getElementById("tg-chat-id").value; 
     const googleSheet = document.getElementById("google-sheet").value;
+
+
+
+
+function isValidTelegramUsername(username) {
+    const cleaned = username.slice(1); // remove '@'
+
+    if (cleaned.length < 5) return false;
+
+    const hasLetter = /[a-zA-Z]/.test(cleaned);
+    const hasNumber = /[0-9]/.test(cleaned);
+    const hasSpecial = /[_]/.test(cleaned); // টেলিগ্রাম underscore (_) সাপোর্ট করে
+
+    // শুধুই সংখ্যা বা শুধুই স্পেশাল ক্যারেক্টার হলে invalid
+    if (!hasLetter) return false;
+
+    // যেহেতু কমপক্ষে একটা অক্ষর আছে, এবং বাকি যেকোনো কিছুর সাথে থাকলে valid
+    return true;
+}
+
+
+
+    // ✅ ইউজারনেম অবশ্যই @ দিয়ে শুরু হতে হবে
+    if (!tgUsername.startsWith("@")) {
+        showAlert(" অবশ্যই প্রথমে '@' দিতে হবে। ");
+        return;
+    }
+
+// ✅ ইউজারনেমে admin, pro, fbm থাকলে ব্লক করব
+const invalidUsernames = ["admin", "pro", "fbm", "edris"];
+const cleanedUsername = tgUsername.slice(1).toLowerCase(); // @ সরিয়ে চেক করব
+
+if (invalidUsernames.includes(cleanedUsername)) {
+    if (cleanedUsername === "admin") {
+        showAlert("সঠিক ইউজারনেম দিন ( admin ❌ )");
+    } else if (cleanedUsername === "pro") {
+        showAlert("সঠিক ইউজারনেম দিন ( pro ❌ )");
+    } else if (cleanedUsername === "edris") {
+        showAlert("সঠিক ইউজারনেম দিন ( Edris ❌ )");
+    } else if (cleanedUsername === "fbm") {
+        showAlert("সঠিক ইউজারনেম দিন ( fbm ❌ )");
+    }
+    return;
+}
+
+
+// ✅ নতুন ফাংশনের ভ্যালিডেশন
+if (!isValidTelegramUsername(tgUsername)) {
+    showAlert("সঠিক ইউজারনেম দিন।");
+    return;
+}
+
+
 
     const requiredFields = [
         { value: accountType, name: "Account Type" },
@@ -136,15 +188,17 @@ document.getElementById("submit-btn").addEventListener("click", function () {
     fetch(telegramUrl)
         .then(async (response) => {
             const result = await response.json();
-
             
-            if (response.ok) {
+ if (response.ok) {
     sendReadyMadeMessageToUser(tgChatId); // ✅ ইউজারের দেওয়া চ্যাট আইডিতে মিডিয়া পাঠাও
 
     setTimeout(() => {
         window.location.href = "success.html";
     }, 1000);
-            }
+}
+            
+            
+            
             
             else {
                 console.error("Telegram API Error:", result);
@@ -159,8 +213,6 @@ document.getElementById("submit-btn").addEventListener("click", function () {
         });
 });
 
-
-
 // ✅ ফাংশন: অ্যালার্ট শো করা
 function showAlert(message) {
     const alertBox = document.getElementById("custom-alert");
@@ -174,6 +226,7 @@ function showAlert(message) {
 document.getElementById("alert-ok").addEventListener("click", function () {
     document.getElementById("custom-alert").style.display = "none";
 });
+
 
 
 
