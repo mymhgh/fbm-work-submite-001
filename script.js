@@ -148,7 +148,7 @@ if (!isValidTelegramUsername(tgUsername)) {
     } else if (accountType.toLowerCase() === "gmail") {
         chatIdForBot = "-1002281630040";
     } else if (accountType.toLowerCase() === "instagram") {
-        chatIdForBot = "-1002289360040";
+        chatIdForBot = "-1002698350138";
     } else if (accountType.toLowerCase() === "telegram") {
         chatIdForBot = "-1002238560040";
     } else {
