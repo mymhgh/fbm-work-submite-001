@@ -1,98 +1,152 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Submit Form</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>FBM Loading</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: url('sp.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      align-items: flex-end; /* নিচের দিকে নামানোর জন্য */
+      justify-content: center;
+    }
+
+    .loader {
+      margin-bottom: 50px; /* নিচ থেকে দূরত্ব */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+      backdrop-filter: blur(3px); /* ব্যাকগ্রাউন্ড ঝাপসা করতে চাইলে */
+    }
+
+    .loading-text {
+      color: white;
+      font-size: 14pt;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+
+    .dot {
+      margin-left: 3px;
+      animation: blink 1.5s infinite;
+    }
+
+    .dot:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+
+    .dot:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+
+    .loading-bar-background {
+      --height: 30px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 5px;
+      width: 200px;
+      height: var(--height);
+      background-color: #212121;
+      box-shadow: #0c0c0c -2px 2px 4px 0px inset;
+      border-radius: calc(var(--height) / 2);
+    }
+
+    .loading-bar {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      --height: 20px;
+      width: 0%;
+      height: var(--height);
+      overflow: hidden;
+      background: linear-gradient(
+        0deg,
+        rgba(222, 74, 15, 1) 0%,
+        rgba(249, 199, 79, 1) 100%
+      );
+      border-radius: calc(var(--height) / 2);
+      animation: loading 4s ease-out infinite;
+    }
+
+    .white-bars-container {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .white-bar {
+      background: linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0) 70%
+      );
+      width: 10px;
+      height: 45px;
+      opacity: 0.3;
+      transform: rotate(45deg);
+    }
+
+    @keyframes loading {
+      0% {
+        width: 0;
+      }
+      80% {
+        width: 100%;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+
+    @keyframes blink {
+      0%, 100% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="form-container">
-    <h2>Work Submit --</h2>
-    
-    <!-- First Set -->
-    <div class="form-group">
-      <div class="form-item">
-        <label for="account-type">Account Type:</label>
-        <select id="account-type" required>
-          <option selected disabled >--Select--</option>
-          <option >Facebook</option>
-          <option disabled>Gmail</option>
-          <option disabled>Telegram</option>
-          <option disabled>Whatsapp</option>
-          <option >Inatagram</option>
-          <option disabled>Tweeter</option>
-        </select>
-      </div>
-      <div class="form-item">
-        <label for="mail-box">Mail Box:</label>
-        <select id="mail-box" required>
-          <option disabled selected>Select</option>
-          <option>1Sec Mail</option>
-          <option>Temp Mail</option>
-          <option selected>Any Mail</option>
-        </select>
-      </div>
-    </div>
 
-    <!-- Second Set -->
-    <div class="form-group">
-      <div class="form-item">
-        <label for="2fa-cookie">2FA-Cook</label>
-        <select id="2fa-cookie">
-          <option disabled selected>--Select--</option>
-          <option value="2FA">2FA</option>
-          <option value="Cookies">Cookies</option>
-        </select>
-      </div>
-      <div class="form-item">
-        <label for="fd-tpe">Friend:</label>
-        <select id="fd-type">
-          <option disabled selected>--Select--</option>
-          <option value="0FD">0+Fd</option>
-          <option value="30FD">30+Fd</option>
-        </select>
-      </div>
-      <div class="form-item">
-        <label for="ttl-id">Total Id:</label>
-        <input type="text" id="ttl-id" placeholder="Total Id" maxlength="4">
-      </div>
-    </div>
-
-    <!-- Third Set -->
-    <div class="form-group">
-      <div class="form-item">
-        <label for="tg-username">UserName:</label>
-        <input type="text" id="tg-username" placeholder="UserName">
-      </div>
-      <div class="form-item">
-        <label for="tg-chat-id">User Id:</label>
-        <input type="text" id="tg-chat-id" placeholder="User ID" maxlength="10">
-      </div>
-    </div>
-
-    <!-- Single Input -->
-    <div class="form-single">
-      <label for="google-sheet">Google Sheet Link:</label>
-      <input type="url" id="google-sheet" placeholder="Paste Link Here">
-    </div>
-
-    <button type="submit" id="submit-btn">Submit</button>
+<div class="loader">
+  <div class="loading-text">
+    Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
   </div>
-  
-</div>
-
-
-<!-- ✅ কাস্টম পপ-আপ -->
-<div id="custom-alert" class="hidden">
-    <div class="alert-box">
-        <p id="alert-message"></p>
-        <button id="alert-ok">OK</button>
+  <div class="loading-bar-background">
+    <div class="loading-bar">
+      <div class="white-bars-container">
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+      </div>
     </div>
+  </div>
 </div>
 
-  <script src="script.js"></script>
+<script>
+  // ৩ সেকেন্ড পরে redirect
+  setTimeout(function () {
+    window.location.href = "work-submit.html"; // এখানে নতুন পেজের লিংক দাও
+  }, 2700); // ৫০০০ মিলিসেকেন্ড = ৫ সেকেন্ড
+</script>
+
 </body>
 </html>
