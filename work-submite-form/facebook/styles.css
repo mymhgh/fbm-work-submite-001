@@ -4,7 +4,7 @@ body { font-family: Arial, sans-serif; background-color: #2c3e50; display: flex;
 
 .form-container { background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 90%; max-width: 600px; }
 
-/* Form Header */ .form-container h2 { text-align: center; margin-bottom: 20px; color: #333; }
+/* Form Header */ .form-container h2 { text-align: center; margin-bottom: 20px; color: #1877f2; }
 
 /* Form Group */ .form-group { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; }
 
@@ -25,8 +25,6 @@ button:hover { background-color: #219150; }
 button:disabled { background-color: #ddd; cursor: not-allowed; }
 
 /* Added to prevent hover effect on disabled buttons */ button:disabled:hover { background-color: #ddd; }
-
-
 
 
 
@@ -64,7 +62,7 @@ button:disabled { background-color: #ddd; cursor: not-allowed; }
 #alert-ok {
     width: 90px;
     height: 35px ;
-    background: #28a745;
+    background: #1877f2;
     color: White;
     border: none;
     padding: 8px 15px;
