@@ -1,0 +1,82 @@
+/* Global Styles */
+
+body { font-family: Arial, sans-serif; background-color: #2c3e50; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; height: 100%; /* ফর্ম মাঝখানে রাখতে height যোগ করা হয়েছে */ }
+
+.form-container { background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 90%; max-width: 600px; }
+
+/* Form Header */ .form-container h2 { text-align: center; margin-bottom: 20px; color: #333; }
+
+/* Form Group */ .form-group { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; }
+
+.form-item { flex: 1; }
+
+label { display: block; font-weight: bold; margin-bottom: 5px; }
+
+select, input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; box-sizing: border-box; transition: border-color 0.3s; }
+
+select:focus, input:focus { border-color: #27ae60; outline: none; }
+
+/* Single Input */ .form-single { margin-bottom: 20px; }
+
+button { width: 100%; padding: 12px; background-color: #27ae60; color: #ffffff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background-color 0.3s; }
+
+button:hover { background-color: #219150; }
+
+button:disabled { background-color: #ddd; cursor: not-allowed; }
+
+/* Added to prevent hover effect on disabled buttons */ button:disabled:hover { background-color: #ddd; }
+
+
+
+
+
+/* ✅ কাস্টম পপ-আপ স্টাইল */
+#custom-alert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none; /* প্রথমে লুকানো থাকবে */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* 📌 পপ-আপ বক্স */
+.alert-box {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    min-width: 100px;
+}
+
+/* 📝 মেসেজ স্টাইল */
+.alert-box p {
+    margin: 0 0 15px;
+    font-size: 16px;
+}
+
+/* 🎯 OK বাটন */
+#alert-ok {
+    width: 90px;
+    height: 35px ;
+    background: #28a745;
+    color: White;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#alert-ok:hover {
+    background: #218838;
+}
+
+/* 🛑 ডিফল্টভাবে পপ-আপ লুকানো থাকবে */
+.hidden {
+    display: none;
+}
