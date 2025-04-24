@@ -1,10 +1,10 @@
 /* Global Styles */
 
-body { font-family: Arial, sans-serif; background-color: #2c3e50; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; height: 100%; /* ফর্ম মাঝখানে রাখতে height যোগ করা হয়েছে */ }
+body { font-family: Arial, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; height: 100%; /* ফর্ম মাঝখানে রাখতে height যোগ করা হয়েছে */ }
 
 .form-container { background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 90%; max-width: 600px; }
 
-/* Form Header */ .form-container h2 { text-align: center; margin-bottom: 20px; color: #1877f2; }
+/* Form Header */ .form-container h2 { text-align: center; margin-bottom: 20px; color:#1c1e21; }
 
 /* Form Group */ .form-group { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; }
 
@@ -18,7 +18,7 @@ select:focus, input:focus { border-color: #1877f2; outline: none; }
 
 /* Single Input */ .form-single { margin-bottom: 20px; }
 
-button { width: 100%; padding: 12px; background-color: #27ae60; color: #ffffff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background-color 0.3s; }
+button { width: 100%; padding: 12px; background-color: #1877f2; color: #ffffff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background-color 0.3s; }
 
 button:hover { background-color: #219150; }
 
