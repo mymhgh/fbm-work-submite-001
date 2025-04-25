@@ -58,7 +58,7 @@ document.getElementById("submit-btn").addEventListener("click", function () {
         return;
     }
 
-    const invalidUsernames = ["admin", "pro", "fbm", "edris"];
+    const invalidUsernames = ["admin", "pro", "fbm", "edris", "sex", "xxx"];
     const cleanedUsername = tgUsername.slice(1).toLowerCase();
 
     if (invalidUsernames.includes(cleanedUsername)) {
@@ -70,6 +70,10 @@ document.getElementById("submit-btn").addEventListener("click", function () {
             showAlert("সঠিক ইউজারনেম দিন ( Edris ❌ )");
         } else if (cleanedUsername === "fbm") {
             showAlert("সঠিক ইউজারনেম দিন ( fbm ❌ )");
+        } else if (cleanedUsername === "sex") {
+            showAlert("সঠিক ইউজারনেম দিন ( Sex ❌ )");
+        } else if (cleanedUsername === "xxx") {
+            showAlert("সঠিক ইউজারনেম দিন ( Xxx ❌ )");
         }
         return;
     }
@@ -157,12 +161,28 @@ document.getElementById("submit-btn").addEventListener("click", function () {
         .then(async (response) => {
             const result = await response.json();
             
-            if (response.ok) {
-                sendReadyMadeMessageToUser(tgChatId);
-                setTimeout(() => {
-                    window.location.href = "success.html";
-                }, 1000);
-            } else {
+        
+            
+            
+           // সাবমিশন লজিকের অংশে (fetch-এর then ব্লকে)
+if (response.ok) {
+    sendReadyMadeMessageToUser(tgChatId);
+    
+    // সিলেকশন অনুযায়ী রিডাইরেক্ট URL নির্ধারণ
+    let redirectPage = "success.html"; // ডিফল্ট
+    
+    if (cookie2fa === "Cookies") {
+        redirectPage = "success/fb-success-cookies.html";
+    } else if (cookie2fa === "2FA" && fdType === "30FD") {
+        redirectPage = "success/fb-success-30fd.html";
+    } else if (cookie2fa === "2FA" && fdType === "0FD") {
+        redirectPage = "success/fb-success-0fd.html";
+    }
+
+    setTimeout(() => {
+        window.location.href = redirectPage;
+    }, 1000);
+} else {
                 console.error("API Error:", result);
                 showAlert(`Failed: ${result.description}`);
                 submitBtn.disabled = false;
