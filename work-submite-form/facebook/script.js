@@ -259,3 +259,9 @@ function sendReadyMadeMessageToUser(tgChatId) {
         console.error("Error sending media message:", err);
     });
 }
+
+
+// Go Back ---------
+function goBack() {
+    window.history.back(); // এটি ইউজারকে আগের পেজে ফিরিয়ে নিয়ে যাবে
+}
