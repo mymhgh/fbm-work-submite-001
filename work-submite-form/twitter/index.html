@@ -1,1 +1,131 @@
+<!DOCTYPE html>
 
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook Work Submit Form</title>
+  <link rel="stylesheet" href="styles.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+     
+</head>
+<body>
+  <div class="form-container">
+    <h2>Work Submit --</h2>
+    
+    <!-- First Set -->
+    <div class="form-group">
+      <div class="form-item">
+        <label for="account-type">Account Type:</label>
+        <select id="account-type" required>
+          <option disabled>--Select-- </option>
+          <option selected>Facebook</option>
+ 
+        </select>
+      </div>
+      <div class="form-item">
+        <label for="mail-box">Mail Box:</label>
+        <select id="mail-box" required>
+          <option disabled selected>Select</option>
+          <option disabled>1Sec Mail</option>
+          <option>Temp Mail</option>
+          <option selected>Any Mail</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Second Set -->
+    <div class="form-group">
+      <div class="form-item">
+        <label for="2fa-cookie">2FA-Cook</label>
+        <select id="2fa-cookie">
+          <option disabled selected>--Select--</option>
+          <option value="2FA">2FA</option>
+          <option value="Cookies">Cookies</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <label for="fd-tpe">Friends:</label>
+        <select id="fd-type">
+          <option disabled selected>--Select--</option>
+          <option value="0FD">0FD</option>
+          <option value="30FD">30FD</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <label for="ttl-id">Total Id:</label>
+        <input type="text" id="ttl-id" placeholder="Total Id" maxlength="4">
+      </div>
+    </div>
+
+    <!-- Third Set -->
+    <div class="form-group">
+      <div class="form-item">
+        <label for="tg-username">UserName:</label>
+        <input type="text" id="tg-username" placeholder="Username">
+      </div>
+      <div class="form-item">
+        <label for="tg-chat-id">User ID:</label>
+        <input type="text" id="tg-chat-id" placeholder="User ID" maxlength="10">
+      </div>
+    </div>
+
+    <!-- Single Input -->
+    <div class="form-single">
+      <label for="google-sheet">File Link:</label>
+      <input type="url" id="google-sheet" placeholder="Paste File Link Here">
+    </div>
+
+    <button type="submit" id="submit-btn">Submit</button>
+  </div>
+  
+</div>
+
+
+<!-- ✅ কাস্টম পপ-আপ -->
+<div id="custom-alert" class="hidden">
+    <div class="alert-box">
+        <p id="alert-message"></p>
+        <button id="alert-ok">OK</button>
+    </div>
+</div>
+
+
+
+  <!-- From Uiverse.io by karthik092726122003 --> 
+<div class="styled-wrapper">
+  <button onclick="goBack()" class="button">
+    <div class="button-box">
+      <span class="button-elem">
+        <svg
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          class="arrow-icon"
+        >
+          <path
+            fill="black"
+            d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+          ></path>
+        </svg>
+      </span>
+      <span class="button-elem">
+        <svg
+          fill="black"
+          viewBox="0 0  24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          class="arrow-icon"
+        >
+          <path
+            d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+          ></path>
+        </svg>
+      </span>
+    </div>
+  </button>
+</div>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
