@@ -261,7 +261,7 @@
             <button class="download-btn" id="downloadPdf">
                 <i class="fas fa-download btn-icon"></i> ডাউনলোড 
             </button>
-            <button class="action-btn" onclick="window.location.href='www.youtube.com'">
+            <button class="action-btn" onclick="window.location.href='https://mymhgh.github.io/fbm-work-submite-001/ws-main-page.html'">
                 <i class="fas fa-tachometer-alt btn-icon"></i> ড্যাশবোর্ড
             </button>
         </div>
@@ -332,7 +332,7 @@
             
             // Generate PDF
             html2pdf().from(element).set(opt).save().then(() => {
-                downloadBtn.innerHTML = '<i class="fas fa-download btn-icon"></i> ডাউনলোডিং..';
+                downloadBtn.innerHTML = '<i class="fas fa-download btn-icon"></i> ডাউনলোড';
                 downloadBtn.disabled = false;
             });
         }
