@@ -317,7 +317,7 @@ h1::after {
 .version {
   text-align: center;
   margin-top: -20px;  /* নেগেটিভ মার্জিন দিয়ে উপরে তুললাম */
-  margin-bottom: 0px; /* নিচের স্পেস ঠিক রাখার জন্য */
+  margin-bottom: -20px; /* নিচের স্পেস ঠিক রাখার জন্য */
   font-size: 0.9rem;
   color: var(--dark);
   opacity: 0.6;
