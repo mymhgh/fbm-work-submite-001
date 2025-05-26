@@ -119,9 +119,9 @@ document.getElementById("submit-btn").addEventListener("click", function () {
 
     if (cookie2fa === "Cookies") {
         chatIdForBot = "-1002698350138";
-    } else if (cookie2fa === "2FA" &&  fdType === "30FD") {
+    } else if (cookie2fa === "2FA" &&  fdType === "10POST") {
         chatIdForBot = "-1002698350138";
-    } else if (cookie2fa === "2FA" &&  fdType === "0FD") {
+    } else if (cookie2fa === "2FA" &&  fdType === "0POST") {
         chatIdForBot = "-1002698350138";
     } else {
         showAlert("সঠিকভাবে 2FA বা Cookies সিলেক্ট করুন।");
@@ -143,7 +143,7 @@ document.getElementById("submit-btn").addEventListener("click", function () {
       - Account Type: ${accountType}
       - Mail Box: ${mailBox}
       - 2FA-Cook: ${cookie2fa}
-      - FD Type: ${fdType}
+      - POST: ${fdType}
       - Ttl Id: ${ttlId}
       - Tg UsrNM: ${tgUsername}
       - Tg ChatId: ${tgChatId}
@@ -170,9 +170,9 @@ if (response.ok) {
     
     if (cookie2fa === "Cookies") {
         redirectPage = "success/ig-success-cookies.html";
-    } else if (cookie2fa === "2FA" && fdType === "30FD") {
+    } else if (cookie2fa === "2FA" && fdType === "10POST") {
         redirectPage = "success/ig-success-30fd.html";
-    } else if (cookie2fa === "2FA" && fdType === "0FD") {
+    } else if (cookie2fa === "2FA" && fdType === "0POST") {
         redirectPage = "success/ig-success-0fd.html";
     }
 
