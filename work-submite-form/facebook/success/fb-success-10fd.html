@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সাবমিশন পেন্ডিং</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html2pdf library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+        
+        :root {
+            --warning: #ff9100;
+            --warning-light: #ffe0b2;
+            --text: #333;
+            --light-text: #666;
+            --bg: #f5f5f5;
+            --primary: #5e35b1;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100%;
+            margin: 0;
+            padding: 20px;
+            color: var(--text);
+            margin-top: 25%;
+        }
+        
+        .pending-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            border-top: 4px solid var(--warning);
+        }
+        
+        .pending-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--warning), #ffab40);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 32px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 145, 0, 0.4); }
+            70% { transform: scale(1); box-shadow: 0 0 0 12px rgba(255, 145, 0, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 145, 0, 0); }
+        }
+        
+        h1 {
+            color: var(--warning);
+            margin: 0 0 10px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .description {
+            color: var(--light-text);
+            margin: 0 auto 25px;
+            line-height: 1.6;
+            font-size: 14px;
+            max-width: 90%;
+        }
+        
+        .info-card {
+            background: var(--warning-light);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+        
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-label {
+            font-weight: 500;
+            color: var(--text);
+            width: 120px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-label i {
+            margin-right: 8px;
+            color: var(--warning);
+            font-size: 14px;
+            width: 16px;
+            text-align: center;
+        }
+        
+        .info-value {
+            flex: 1;
+            font-weight: 400;
+            color: var(--text);
+            word-break: break-word;
+        }
+        
+        .copy-btn {
+            background: rgba(255,255,255,0.7);
+            border: none;
+            border-radius: 4px;
+            padding: 2px 8px;
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: white;
+        }
+        
+        .status-badge {
+            background: var(--warning);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .status-badge i {
+            margin-right: 4px;
+            font-size: 10px;
+        }
+        
+.button-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.action-btn {
+    background: linear-gradient(to right, var(--warning), #ffab40);
+    color: white;
+    border: none;
+    padding: 12px 5px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 145, 0, 0.3);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 145, 0, 0.4);
+}
+
+.action-btn:active {
+    transform: translateY(0);
+}
+
+.download-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 5px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(94, 53, 177, 0.3);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(94, 53, 177, 0.4);
+}
+
+.download-btn:active {
+    transform: translateY(0);
+}
+
+.btn-icon {
+    margin-right: 8px;
+}
+    </style>
+</head>
+<body>
+    <div class="pending-container" id="pdf-content">
+        <div class="pending-icon">
+<i class="fa-regular fa-circle-check"></i>
+        </div>
+        
+        <h1>সাবমিশন সফল 🎉</h1>
+        <p class="description">
+            আপনার ফাইলটি সফলভাবে জমা হয়েছে এবং রিভিউতে আছে। প্রসেসিং সম্পূর্ণ হলে আপনাকে নোটিফিকেশন পাঠানো হবে।
+        </p>
+        
+        <div class="info-card">
+            <div class="info-row">
+                <span class="info-label"><i class="fas fa-receipt"></i> অর্ডার আইডি:</span>
+                <span class="info-value" id="orderId">
+                    <!-- Dynamic content will be inserted here -->
+                </span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label"><i class="far fa-calendar-alt"></i> তারিখ ও সময়:</span>
+                <span class="info-value" id="submissionTime">
+                    <!-- Dynamic content will be inserted here -->
+                </span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label"><i class="far fa-file-alt"></i> ফাইল:</span>
+                <span class="info-value">
+                  2FA-10FD-FB
+                  </span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label"><i class="fas fa-info-circle"></i> স্ট্যাটাস:</span>
+                <span class="info-value">
+                    <span class="status-badge">
+                        <i class="fas fa-clock"></i> পেন্ডিং
+                    </span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="button-grid">
+            <button class="download-btn" id="downloadPdf">
+                <i class="fas fa-download btn-icon"></i> ডাউনলোড 
+            </button>
+            <button class="action-btn" onclick="window.location.href='https://mymhgh.github.io/fbm-work-submite-001/ws-main-page.html'">
+                <i class="fas fa-tachometer-alt btn-icon"></i> ড্যাশবোর্ড
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Generate random order ID with letters and numbers
+        function generateOrderId() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let result = '';
+            for (let i = 0; i < 8; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        // Get current date and time in Bengali format (without year)
+        function getBengaliDateTime() {
+            const now = new Date();
+            
+            // Bengali month numbers (1-12)
+            const day = now.getDate();
+            const month = now.getMonth() + 1; // Months are 0-11 in JS
+            
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            
+            return `${day}-${month}, ${hours}:${minutes} ${ampm}`;
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('orderId').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const copyBtn = document.querySelector('.copy-btn');
+                if (copyBtn) {
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                    copyBtn.style.background = '#4CAF50';
+                    copyBtn.style.color = 'white';
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="far fa-copy"></i>';
+                        copyBtn.style.background = 'rgba(255,255,255,0.7)';
+                        copyBtn.style.color = 'inherit';
+                    }, 1500);
+                }
+            });
+        }
+
+        // Generate PDF function
+        function generatePDF() {
+            const element = document.getElementById('pdf-content');
+            const opt = {
+                margin: 10,
+                filename: 'submission_status.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            // Show loading indication
+            const downloadBtn = document.getElementById('downloadPdf');
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin btn-icon"></i> প্রস্তুত হচ্ছে...';
+            downloadBtn.disabled = true;
+            
+            // Generate PDF
+            html2pdf().from(element).set(opt).save().then(() => {
+                downloadBtn.innerHTML = '<i class="fas fa-download btn-icon"></i> ডাউনলোড';
+                downloadBtn.disabled = false;
+            });
+        }
+
+        // On page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set order ID
+            const orderId = generateOrderId();
+            const orderIdElement = document.getElementById('orderId');
+            orderIdElement.textContent = orderId;
+            
+            // Add copy button after order ID
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.innerHTML = '<i class="far fa-copy"></i> ';
+            copyBtn.onclick = copyToClipboard;
+            orderIdElement.appendChild(copyBtn);
+            
+            // Set submission time
+            document.getElementById('submissionTime').textContent = getBengaliDateTime();
+            
+            // Add PDF download event
+            document.getElementById('downloadPdf').addEventListener('click', generatePDF);
+        });
+    </script>
+</body>
+</html>
