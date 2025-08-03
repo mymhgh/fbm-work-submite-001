@@ -265,6 +265,38 @@ function sendReadyMadeMessageToUser(tgChatId) {
 }
 
 
+
+
+ // Monetag SDK (Optimized Loading) 
+
+        // Load Monetag SDK asynchronously
+        function loadMonetag() {
+            var script = document.createElement('script');
+            script.src = '//libtl.com/sdk.js';
+            script.setAttribute('data-zone', '9549781');
+            script.setAttribute('data-sdk', 'show_9549781');
+            document.body.appendChild(script);
+            
+            // Initialize immediately after load
+            script.onload = function() {
+                show_9549781({
+                    type: 'inApp',
+                    inAppSettings: {
+                        frequency: 2,
+                        capping: 0.1,
+                        interval: 30,
+                        timeout: 3,  // Reduced from 5 to 3 seconds for faster display
+                        everyPage: false
+                    }
+                });
+            };
+        }
+        
+        // Load after slight delay to prioritize content
+        setTimeout(loadMonetag, 800);
+
+
+
 // Go Back ---------
 function goBack() {
     window.history.back(); // এটি ইউজারকে আগের পেজে ফিরিয়ে নিয়ে যাবে
