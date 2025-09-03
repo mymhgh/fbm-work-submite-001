@@ -149,14 +149,14 @@
       right: -5px;
       width: 22px;
       height: 22px;
-      background: linear-gradient(135deg, #ff8c00, #d37604);
+      background: linear-gradient(135deg, #ff8c00);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       border: 2px solid white;
       z-index: 2;
-    /*  animation: rotate 4s linear infinite, pulse 2s infinite;*/
+     animation: pulse 2s infinite;
     }
 
     .verified-badge i {
@@ -333,14 +333,14 @@
 }
 
 .social-logo {
-  width: 50px;
+  width: 70px;
   height: 50px;
   object-fit: contain;
   transition: var(--transition);
 }
 
 .social-icon {
-  width: 80px;
+  width: 70px;
   height: 80px;
   border-radius: 5px;
   display: flex;
@@ -436,7 +436,7 @@
 
     @keyframes pulse {
       0% {
-        box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.7);
+        box-shadow: 0 0 0 0 #ff8c00;
       }
       70% {
         box-shadow: 0 0 0 10px rgba(67, 97, 238, 0);
