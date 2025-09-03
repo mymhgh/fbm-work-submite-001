@@ -164,24 +164,35 @@
       font-size: 12px;
     }
 
-    .user-info {
-      flex-grow: 1;
-    }
+.user-info {
+    flex-grow: 1;
+    /* নতুন property যোগ করুন */
+    min-width: 0; /* এটি important for text ellipsis */
+}
 
-    .user-name {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--dark);
-      margin-bottom: 8px;
-      text-align: left;
-    }
+.user-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 8px;
+    text-align: left;
+    /* নতুন properties যোগ করুন */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px; /* আপনার প্রয়োজন অনুযায়ী adjust করুন */
+}
 
-    .user-username {
-      font-size: 15px;
-      color: rgb(94, 91, 91);
-      opacity: 0.8;
-
-    }
+.user-username {
+    font-size: 15px;
+    color: rgb(94, 91, 91);
+    opacity: 0.8;
+    /* নতুন properties যোগ করুন */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px; /* আপনার প্রয়োজন অনুযায়ী adjust করুন */
+}
 
     .card {
       background: rgba(255, 255, 255, 0.9);
@@ -340,13 +351,12 @@
 }
 
 .social-icon {
-  width: 70px;
+  width: 80px;
   height: 80px;
-  border-radius: 5px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-/*  background: white;*/
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   transition: var(--transition);
   margin-bottom: 8px;
