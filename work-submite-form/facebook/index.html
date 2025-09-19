@@ -5,32 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Facebook Work Submit Form</title>
   <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #1c1e21;
+      --input-bg: #f5f6f7;
+      --input-border: #dddfe2;
+      --primary-color: #1877f2;
+      --shadow-color: rgba(0, 0, 0, 0.12);
+      --card-bg: #ffffff;
+      --readonly-bg: #f0f2f5;
+      --readonly-color: #65676b;
+      --readonly-border: #e4e6eb;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #18191a;
+      --text-color: #e4e6eb;
+      --input-bg: #3a3b3c;
+      --input-border: #4e4f50;
+      --primary-color: #2d88ff;
+      --shadow-color: rgba(0, 0, 0, 0.4);
+      --card-bg: #242526;
+      --readonly-bg: #3a3b3c;
+      --readonly-color: #b0b3b8;
+      --readonly-border: #4e4f50;
+    }
+
     /* Global Styles */
     body { 
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #f0f2f5 0%, #e4e6eb 100%); 
+        background: linear-gradient(135deg, var(--bg-color) 0%, var(--input-bg) 100%); 
         display: flex; 
         justify-content: center; 
         align-items: center; 
         min-height: 100vh; 
         margin: 0; 
         height: 100%;
+        color: var(--text-color);
+        transition: all 0.3s ease;
     }
 
     .form-container { 
-        background: #ffffff; 
+        background: var(--card-bg); 
         padding: 35px; 
         border-radius: 12px; 
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); 
+        box-shadow: 0 8px 24px var(--shadow-color); 
         width: 90%; 
         max-width: 600px; 
+        transition: all 0.3s ease;
     }
 
     /* Form Header */ 
     .form-container h2 { 
         text-align: center; 
         margin-bottom: 25px; 
-        color: #1877f2;
+        color: var(--primary-color);
         font-size: 24px;
         font-weight: 600;
     }
@@ -51,34 +80,35 @@
         display: block; 
         font-weight: 600; 
         margin-bottom: 8px; 
-        color: #1c1e21;
+        color: var(--text-color);
         font-size: 14px;
     }
 
     select, input { 
         width: 100%; 
         padding: 12px; 
-        border: 1px solid #dddfe2; 
+        border: 1px solid var(--input-border); 
         border-radius: 6px; 
         font-size: 14px; 
         box-sizing: border-box; 
         transition: all 0.2s ease; 
-        background-color: #f5f6f7;
+        background-color: var(--input-bg);
+        color: var(--text-color);
     }
 
     select:focus, input:focus { 
-        border-color: #1877f2; 
+        border-color: var(--primary-color); 
         outline: none;
         box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
-        background-color: #fff;
+        background-color: var(--card-bg);
     }
 
     /* Read-only input styling */
     input[readonly] {
-        background-color: #f0f2f5;
+        background-color: var(--readonly-bg);
         cursor: not-allowed;
-        color: #65676b;
-        border-color: #e4e6eb;
+        color: var(--readonly-color);
+        border-color: var(--readonly-border);
     }
 
     /* Single Input */ 
@@ -89,7 +119,7 @@
     button { 
         width: 100%; 
         padding: 14px; 
-        background-color: #1877f2; 
+        background-color: var(--primary-color); 
         color: #ffffff; 
         border: none; 
         border-radius: 6px; 
@@ -105,9 +135,9 @@
     }
 
     button:disabled { 
-        background-color: #dddfe2; 
+        background-color: var(--input-border); 
         cursor: not-allowed; 
-        color: #bcc0c4;
+        color: var(--readonly-color);
     }
 
     /* ✅ কাস্টম পপ-আপ স্টাইল */
@@ -126,13 +156,14 @@
 
     /* 📌 পপ-আপ বক্স */
     .alert-box {
-        background: white;
+        background: var(--card-bg);
         padding: 25px;
         border-radius: 8px;
         text-align: center;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 20px var(--shadow-color);
         min-width: 300px;
         max-width: 90%;
+        color: var(--text-color);
     }
 
     /* 📝 মেসেজ স্টাইল */
@@ -140,14 +171,14 @@
         margin: 0 0 20px;
         font-size: 16px;
         line-height: 1.5;
-        color: #1c1e21;
+        color: var(--text-color);
     }
 
     /* 🎯 OK বাটন */
     #alert-ok {
         width: 100px;
         height: 40px;
-        background: #1877f2;
+        background: var(--primary-color);
         color: white;
         border: none;
         border-radius: 6px;
@@ -186,7 +217,7 @@
       position: absolute;
       border-radius: 20%;
       inset: 7px;
-      border: 3px solid black;
+      border: 3px solid var(--text-color);
       transition:
         opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
         transform 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) 80ms;
@@ -236,7 +267,7 @@
       height: 30px;
       margin: 18px 18px 0 18px;
       transform: rotate(360deg);
-      fill: #f0eeef;
+      fill: var(--text-color);
     }
 
     .styled-wrapper .button:hover .button-box,
@@ -248,8 +279,8 @@
     /* লোডিং স্পিনার */
     .loader {
       display: none;
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #1877f2;
+      border: 4px solid var(--input-border);
+      border-top: 4px solid var(--primary-color);
       border-radius: 50%;
       width: 30px;
       height: 30px;
@@ -262,6 +293,60 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    /* থিম সুইচ বাটন */
+    .theme-switch {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+    }
+
+    .theme-switch-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    .theme-switch-label {
+      margin-right: 10px;
+      color: var(--text-color);
+      font-weight: 600;
+    }
+
+    .theme-switch input {
+      display: none;
+    }
+
+    .slider {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+      background-color: #ccc;
+      border-radius: 34px;
+      transition: .4s;
+      cursor: pointer;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      border-radius: 50%;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary-color);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
   </style>
   
   <!-- Firebase SDK -->
@@ -269,6 +354,17 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 </head>
 <body>
+  <!-- থিম সুইচ -->
+<!--  <div class="theme-switch">
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch-label" for="checkbox"> 
+        <span id="theme-label">ডার্ক</span> মোড
+      </label>
+      <input type="checkbox" id="checkbox" />
+      <div class="slider"></div>
+    </div>
+  </div>-->
+
   <div class="form-container">
     <h2>Facebook Work Submit Form</h2>
     
@@ -306,7 +402,7 @@
         </select>
       </div>
       <div class="form-item">
-        <label for="fd-tpe">Friends:</label>
+        <label for="fd-type">Friends:</label>
         <select id="fd-type">
           <option disabled selected>--Select--</option>
           <option value="0FD">0FD</option>
@@ -362,14 +458,12 @@
             class="arrow-icon"
           >
             <path
-              fill="black"
               d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
             ></path>
           </svg>
         </span>
         <span class="button-elem">
           <svg
-            fill="black"
             viewBox="0 0  24 24"
             xmlns="http://www.w3.org/2000/svg"
             class="arrow-icon"
@@ -396,6 +490,39 @@
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+
+    // থিম ম্যানেজমেন্ট
+    function setupTheme() {
+      const checkbox = document.getElementById('checkbox');
+      const themeLabel = document.getElementById('theme-label');
+      const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+      
+      // localStorage থেকে থিম সেটিং পড়ুন
+      const currentTheme = localStorage.getItem('theme');
+      
+      if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        checkbox.checked = true;
+        themeLabel.textContent = 'লাইট';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        checkbox.checked = false;
+        themeLabel.textContent = 'ডার্ক';
+      }
+      
+      // থিম সুইচ ইভেন্ট লিসেনার
+      checkbox.addEventListener('change', function() {
+        if (this.checked) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          themeLabel.textContent = 'লাইট';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+          localStorage.setItem('theme', 'light');
+          themeLabel.textContent = 'ডার্ক';
+        }
+      });
+    }
 
     // URL থেকে ইউজার ডেটা পড়ার ফাংশন
     function getUserFromURL() {
@@ -425,6 +552,9 @@
 
     // DOM লোড হলে ইউজার ডেটা অটো-ফিল করুন
     document.addEventListener('DOMContentLoaded', function() {
+      // থিম সেটআপ
+      setupTheme();
+      
       const user = getUserFromURL();
       
       if (user) {
@@ -512,12 +642,18 @@
     document.getElementById("submit-btn").addEventListener("click", async function () { 
       const accountType = document.getElementById("account-type").value; 
       const mailBox = document.getElementById("mail-box").value || " "; 
-      const cookie2fa = document.getElementById("2fa-cookie").value.trim();
+      const cookie2fa = document.getElementById("2fa-cookie").value;
       const fdType = document.getElementById("fd-type").value || " "; 
       const ttlId = document.getElementById("ttl-id").value; 
       const tgUsername = document.getElementById("tg-username").value.trim();
       const tgChatId = document.getElementById("tg-chat-id").value; 
       const googleSheet = document.getElementById("google-sheet").value;
+
+      // 2FA-Cook ভ্যালিডেশন ঠিক করা
+      if (!cookie2fa || cookie2fa === "--Select--") {
+        showAlert("দয়া করে 2FA/Cookies সিলেক্ট করুন।");
+        return;
+      }
 
       // শুধুমাত্র @ চেক করা
       if (!tgUsername.startsWith("@")) {
@@ -535,8 +671,8 @@
       ];
 
       for (const field of requiredFields) {
-          if (!field.value || field.value === "Select") {
-              showAlert(`Please fill out the ${field.name}.`);
+          if (!field.value || field.value === "Select" || field.value === "--Select--") {
+              showAlert(`দয়া করে ${field.name} পূরণ করুন।`);
               return;
           }
       }
