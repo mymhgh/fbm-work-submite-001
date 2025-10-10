@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Work</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #8b5cf6;
+            --accent: #06d6a0;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
+        }
+
+        .dark-mode {
+            --text: #f1f5f9;
+            --text-light: #94a3b8;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            margin-bottom: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .profile-pic {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .profile-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .profile-details {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .back-btn {
+            background: var(--card);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            border: none;
+        }
+
+        /* Guide Section */
+        .guide-section {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .video-container {
+            width: 100%;
+            height: 200px;
+            border-radius: var(--radius);
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: var(--radius);
+        }
+
+        .guide-text {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .terms-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .terms-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .terms-list li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .terms-list i {
+            color: var(--accent);
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            padding: 15px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+        }
+
+        /* Social Platforms Grid - 3 Column */
+        .social-section {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .social-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .social-card {
+            background: var(--bg);
+            border: 2px solid var(--bg);
+            border-radius: var(--radius);
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .social-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .social-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .social-name {
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        /* Notice Section */
+        .notice-section {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--warning);
+        }
+
+        .notice-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--warning);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notice-text {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Version Info */
+        .version-info {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        /* Video Thumbnail Styles */
+        .video-thumbnail-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .play-button {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .video-thumbnail-container:hover .play-overlay {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .video-thumbnail-container:hover .play-button {
+            transform: scale(1.1);
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with User Profile -->
+        <header>
+            <div class="user-profile">
+                <div class="profile-pic" id="profilePic">U</div>
+                <div class="profile-info">
+                    <div class="profile-name" id="profileName">Loading...</div>
+                    <div class="profile-details">
+                        <span id="userName">@username</span> • 
+                        <span id="userId">ID: ...</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Video Guide Section -->
+        <div class="guide-section">
+            <div class="section-title">
+                <span><i class="fas fa-play-circle"></i> কাজ জমা দেওয়ার নিয়ম</span>
+            </div>
+            
+            <div class="video-thumbnail-container" id="videoThumbnail">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGulVYznuO3AIXARkY4ta9Apteso_iDrlWyeOTrcP5cnf2WlmmBz8Pnpytk9HCo82yDdwPUs9DuEn15Z4g9jC9mnGhAeMrFMo9wju_OOjQxf_YRJLSmpnHSjEGKuM5tBOSRq4ccze-8q4/s16000/youtubethumbnaildownloader.png" 
+                     alt="Video Thumbnail" class="video-thumbnail">
+                <div class="play-overlay">
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guide-text">
+                কাজ জমা দেওয়ার আগে এই ভিডিওটি দেখে নিন। ভিডিওতে সম্পূর্ণ প্রক্রিয়া ব্যাখ্যা করা হয়েছে।
+            </div>
+            
+            <ul class="terms-list">
+                <li><i class="fas fa-check-circle"></i> সঠিক স্ক্রিনশট আপলোড করুন</li>
+                <li><i class="fas fa-check-circle"></i> কাজ সম্পূর্ণ করে তারপর জমা দিন</li>
+                <li><i class="fas fa-check-circle"></i> ভুল তথ্য দিবেন না</li>
+                <li><i class="fas fa-check-circle"></i> সমস্যা হলে সাহায্য নিন</li>
+            </ul>
+        </div>
+
+        <!-- Important Notice -->
+        <div class="notice-section">
+            <div class="notice-title">
+                <i class="fas fa-exclamation-triangle"></i> গুরুত্বপূর্ণ নোটিশ
+            </div>
+            <div class="notice-text">
+                কাজ জমা দিতে না জানলে উপরের ভিডিওটি দেখুন এবং যেকোনো সমস্যায় আমাদের সাথে যোগাযোগ করুন। ভুল তথ্য দিলে কাজ গ্রহণ করা হবে না।
+            </div>
+        </div>
+
+        <!-- Social Platforms Grid -->
+        <div class="social-section">
+            <div class="section-title">
+                <i class="fas fa-share-alt"></i> কাজ জমা দিন
+            </div>
+            
+            <div class="social-grid" id="socialGrid">
+                <!-- Social platforms will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Version Info -->
+        <div class="version-info">
+            Version 7.947
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="modal" id="videoModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; backdrop-filter: blur(10px);">
+        <div class="modal-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 800px;">
+            <div style="position: relative; padding-bottom: 56.25%; height: 0;">
+                <iframe id="videoIframe" src="about:blank" 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px;" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <button id="closeVideo" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        let userData = null;
+
+        // Social Platforms Configuration
+        const socialPlatforms = [
+            { 
+                id: 'facebook', 
+                name: 'Facebook', 
+                logo: 'work-img/facebook.png',
+                url: 'work-submite-form/facebook/index.html',
+                available: true
+            },
+            { 
+                id: 'instagram', 
+                name: 'Instagram', 
+                logo: 'work-img/instagram.png',
+                url: 'work-submite-form/instagram/index.html',
+                available: true
+            },
+            { 
+                id: 'talkatone', 
+                name: 'Talkatone', 
+                logo: 'work-img/talkatone.jpg',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'deltaforce', 
+                name: 'Delta Force', 
+                logo: 'work-img/delta-force.webp',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'linkedin', 
+                name: 'LinkedIn', 
+                logo: 'work-img/linkedin.png',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'gmail', 
+                name: 'Gmail', 
+                logo: 'work-img/gmail.png',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'twitter', 
+                name: 'Twitter', 
+                logo: 'work-img/twitter.png',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'rednote', 
+                name: 'Rednote', 
+                logo: 'work-img/rednote.png',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'snapchat', 
+                name: 'SnapChat', 
+                logo: 'work-img/snapchat.jpeg',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'wechat', 
+                name: 'WeChat', 
+                logo: 'work-img/wechat.jpeg',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'tumblr', 
+                name: 'Tumblr', 
+                logo: 'work-img/tumblr.png',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'qq', 
+                name: 'QQ', 
+                logo: 'work-img/qq.png',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'reddit', 
+                name: 'Reddit', 
+                logo: 'work-img/reddit.jpeg',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'pinterest', 
+                name: 'Pinterest', 
+                logo: 'work-img/pinterest.png',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'tiktok', 
+                name: 'TikTok', 
+                logo: 'work-img/tiktok.png',
+                url: 'error/error.html',
+                available: false
+            },
+            { 
+                id: 'line', 
+                name: 'Line', 
+                logo: 'work-img/line.png',
+                url: 'error/error.html',
+                available: false
+            }
+        ];
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        // Initialize App
+        function initializeApp() {
+            // Set theme from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const theme = urlParams.get('theme');
+            if (theme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+
+            // Telegram WebApp Expansion
+            if (tg && tg.expand) {
+                tg.expand();
+            }
+            
+            // Get Telegram User Data
+            let tgUser = null;
+            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                tgUser = tg.initDataUnsafe.user;
+            }
+            
+            // Fallback for testing
+            if (!tgUser) {
+                tgUser = {
+                    id: "123456789",
+                    username: "test_user",
+                    first_name: "Test",
+                    last_name: "User",
+                    photo_url: "https://via.placeholder.com/150"
+                };
+            }
+            
+            userData = {
+                chatId: tgUser.id.toString(),
+                username: tgUser.username || `user_${tgUser.id}`,
+                firstName: tgUser.first_name || '',
+                lastName: tgUser.last_name || '',
+                photoUrl: tgUser.photo_url || ''
+            };
+            
+            updateUserProfile();
+            loadSocialPlatforms();
+            setupEventListeners();
+        }
+
+        // Update User Profile
+        function updateUserProfile() {
+            const fullName = `${userData.firstName || ''} ${userData.lastName || ''}`.trim();
+            document.getElementById('profileName').textContent = fullName || 'User';
+            document.getElementById('userName').textContent = '@' + (userData.username || 'username');
+            document.getElementById('userId').textContent = 'ID: ' + userData.chatId;
+            
+            const profilePic = document.getElementById('profilePic');
+            if (userData.photoUrl) {
+                profilePic.style.backgroundImage = `url(${userData.photoUrl})`;
+                profilePic.textContent = '';
+            } else {
+                const initials = (userData.firstName ? userData.firstName.charAt(0).toUpperCase() : '') + 
+                               (userData.lastName ? userData.lastName.charAt(0).toUpperCase() : '');
+                profilePic.textContent = initials || 'U';
+            }
+        }
+
+        // Load Social Platforms in 3 Column Grid
+        function loadSocialPlatforms() {
+            const container = document.getElementById('socialGrid');
+            container.innerHTML = '';
+            
+            socialPlatforms.forEach(platform => {
+                const card = document.createElement('a');
+                card.className = 'social-card';
+                card.href = platform.url;
+                card.setAttribute('data-platform', platform.id);
+                
+                if (!platform.available) {
+                    card.style.opacity = '0.6';
+                    card.style.cursor = 'not-allowed';
+                }
+                
+                card.innerHTML = `
+                    <div class="social-logo" style="background-image: url(${platform.logo})"></div>
+                    <div class="social-name">${platform.name}</div>
+                `;
+                
+                card.addEventListener('click', function(e) {
+                    if (!platform.available) {
+                        e.preventDefault();
+                        showAlert('Coming Soon', `${platform.name} will be available soon`, 'info');
+                        return;
+                    }
+                    
+                    // Add user data to URL for platforms that are available
+                    if (platform.available) {
+                        e.preventDefault();
+                        const encodedUser = encodeURIComponent(JSON.stringify(userData));
+                        window.location.href = `${platform.url}?user=${encodedUser}`;
+                    }
+                });
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // Video thumbnail click
+            document.getElementById('videoThumbnail').addEventListener('click', playVideo);
+            
+            // Video modal close
+            document.getElementById('closeVideo').addEventListener('click', closeVideo);
+            
+            // Close video when clicking outside
+            document.getElementById('videoModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeVideo();
+                }
+            });
+        }
+
+        // Play Video
+        function playVideo() {
+            const videoModal = document.getElementById('videoModal');
+            const videoIframe = document.getElementById('videoIframe');
+            
+            videoIframe.src = "https://www.youtube.com/embed/y7IkxeXxowA?si=3S-L1gcwamC4DKHa&autoplay=1";
+            videoModal.style.display = 'block';
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Video
+        function closeVideo() {
+            const videoModal = document.getElementById('videoModal');
+            const videoIframe = document.getElementById('videoIframe');
+            
+            videoIframe.src = 'about:blank';
+            videoModal.style.display = 'none';
+            
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+        }
+
+        // Show Alert
+        function showAlert(title, text, icon) {
+            // Simple alert implementation - you can replace with SweetAlert if needed
+            alert(`${title}: ${text}`);
+        }
+    </script>
+</body>
+</html>
