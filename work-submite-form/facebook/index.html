@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook Work Submit Form</title>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+
+  <style>
+    /* NexaWallet Style Theme Variables */
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #8b5cf6;
+      --accent: #06d6a0;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      --radius: 16px;
+      --input-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --button-bg: #2563eb;
+      --button-hover: #1d4ed8;
+      --button-disabled: #94a3b8;
+      --readonly-bg: #f1f5f9;
+      --readonly-text: #64748b;
+    }
+
+    /* Dark Mode */
+    .dark-mode {
+      --text: #f1f5f9;
+      --text-light: #94a3b8;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      --input-bg: #334155;
+      --border-color: #475569;
+      --button-bg: #2563eb;
+      --button-hover: #1d4ed8;
+      --button-disabled: #475569;
+      --readonly-bg: #334155;
+      --readonly-text: #94a3b8;
+    }
+
+    /* Global Styles - NexaWallet Style */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      transition: all 0.3s ease;
+      min-height: 100vh;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .form-container { 
+      background: var(--card); 
+      padding: 30px; 
+      border-radius: var(--radius); 
+      box-shadow: var(--shadow); 
+      width: 100%; 
+      max-width: 500px; 
+      transition: all 0.3s ease;
+    }
+
+    /* Form Header - NexaWallet Style */
+    .form-container h2 { 
+      text-align: center; 
+      margin-bottom: 25px; 
+      color: var(--primary);
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    /* Form Group - NexaWallet Style */
+    .form-group { 
+      display: flex; 
+      justify-content: space-between; 
+      margin-bottom: 20px; 
+      gap: 12px; 
+    }
+
+    .form-item { 
+      flex: 1; 
+    }
+
+    label { 
+      display: block; 
+      font-weight: 500; 
+      margin-bottom: 8px; 
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    select, input { 
+      width: 100%; 
+      padding: 12px 15px; 
+      border: 1px solid var(--border-color); 
+      border-radius: var(--radius); 
+      font-size: 0.9rem; 
+      box-sizing: border-box; 
+      transition: all 0.3s ease; 
+      background-color: var(--input-bg);
+      color: var(--text);
+    }
+
+    select:focus, input:focus { 
+      border-color: var(--primary); 
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    /* Read-only input styling */
+    input[readonly] {
+      background-color: var(--readonly-bg);
+      cursor: not-allowed;
+      color: var(--readonly-text);
+      border-color: var(--border-color);
+    }
+
+    /* Single Input */
+    .form-single { 
+      margin-bottom: 20px; 
+    }
+
+    /* Button - NexaWallet Style */
+    button { 
+      width: 100%; 
+      padding: 15px; 
+      background-color: var(--button-bg); 
+      color: #ffffff; 
+      border: none; 
+      border-radius: var(--radius); 
+      font-size: 1rem; 
+      font-weight: 600;
+      cursor: pointer; 
+      transition: all 0.3s ease; 
+      margin-top: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    button:hover { 
+      background-color: var(--button-hover); 
+      transform: translateY(-2px);
+    }
+
+    button:disabled { 
+      background-color: var(--button-disabled); 
+      cursor: not-allowed; 
+      color: var(--text-light);
+      transform: none;
+    }
+
+    /* Custom Alert - NexaWallet Style */
+    #custom-alert {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .alert-box {
+      background: var(--card);
+      padding: 25px;
+      border-radius: var(--radius);
+      text-align: center;
+      box-shadow: var(--shadow);
+      min-width: 300px;
+      max-width: 90%;
+      color: var(--text);
+    }
+
+    .alert-box p {
+      margin: 0 0 20px;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    #alert-ok {
+      width: 100px;
+      padding: 10px 20px;
+      background: var(--button-bg);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    #alert-ok:hover {
+      background: var(--button-hover);
+    }
+
+    /* Go Back Button - NexaWallet Style */
+    .styled-wrapper {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 10;
+    }
+
+    .styled-wrapper .button {
+      display: block;
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin: 0;
+      overflow: hidden;
+      outline: none;
+      background-color: var(--card);
+      cursor: pointer;
+      border: 0;
+      border-radius: 50%;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .styled-wrapper .button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .styled-wrapper .button-box {
+      display: flex;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .styled-wrapper .button-elem {
+      display: block;
+      width: 20px;
+      height: 20px;
+      margin: 20px 20px 0 20px;
+      fill: var(--primary);
+    }
+
+    .styled-wrapper .button:hover .button-box,
+    .styled-wrapper .button:focus .button-box {
+      transition: 0.4s;
+      transform: translateX(-56px);
+    }
+
+    /* Loading Spinner - NexaWallet Style */
+    .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-container fade-in">
+      <h2>Work Submit --</h2>
+      
+      <!-- First Set -->
+      <div class="form-group">
+        <div class="form-item">
+          <label for="account-type">Account Type:</label>
+          <select id="account-type" required>
+            <option disabled>--Select-- </option>
+            <option selected>Facebook</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label for="mail-box">Mail Box:</label>
+          <select id="mail-box" required>
+            <option disabled selected>Select</option>
+            <option > Web Mail </option>
+            <option > Trusted Hotmail </option>
+            <option > Trusted Outlook </option>
+            <option>Temp Mail</option>
+            <option selected>Any Mail</option>
+            <option > Sort Mail </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Second Set -->
+      <div class="form-group">
+        <div class="form-item">
+          <label for="2fa-cookie">2FA-Cook</label>
+          <select id="2fa-cookie">
+            <option disabled selected>--Select--</option>
+            <option value="2FA">2FA</option>
+            <option value="Cookies">Cookies</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label for="fd-tpe">Friends:</label>
+          <select id="fd-type">
+            <option disabled selected>--Select--</option>
+            <option value="0FD">0FD</option>
+            <option value="10FD">10FD</option>
+            <option value="20FD">20FD</option>
+            <option value="30FD">30FD</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label for="ttl-id">Total Id:</label>
+          <input type="text" id="ttl-id" placeholder="Total Id" maxlength="4">
+        </div>
+      </div>
+
+      <!-- Third Set -->
+      <div class="form-group">
+        <div class="form-item">
+          <label for="tg-username">UserName:</label>
+          <input type="text" id="tg-username" placeholder="Username" readonly>
+        </div>
+        <div class="form-item">
+          <label for="tg-chat-id">User ID:</label>
+          <input type="text" id="tg-chat-id" placeholder="User ID" maxlength="10" readonly>
+        </div>
+      </div>
+
+      <!-- Single Input -->
+      <div class="form-single">
+        <label for="google-sheet">File Link:</label>
+        <input type="url" id="google-sheet" placeholder="Paste File Link Here">
+      </div>
+
+      <button type="submit" id="submit-btn">Submit</button>
+    </div>
+  </div>
+  
+  <!-- Custom Alert -->
+  <div id="custom-alert" class="hidden">
+      <div class="alert-box">
+          <p id="alert-message"></p>
+          <button id="alert-ok">OK</button>
+      </div>
+  </div>
+
+  <!-- Go Back Button -->
+  <div class="styled-wrapper">
+    <button onclick="goBack()" class="button">
+      <div class="button-box">
+        <span class="button-elem">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+          </svg>
+        </span>
+        <span class="button-elem">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+          </svg>
+        </span>
+      </div>
+    </button>
+  </div>
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyARenyIznx9-hCazF1RR2BhjpifYT2l82g",
+      authDomain: "fbm-market.firebaseapp.com",
+      databaseURL: "https://fbm-market-default-rtdb.firebaseio.com",
+      projectId: "fbm-market",
+      storageBucket: "fbm-market.firebasestorage.app",
+      messagingSenderId: "294681158409",
+      appId: "1:294681158409:web:84d6ee76733df2631a69d8"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // টাইমআউট সহ fetch ফাংশন
+    async function fetchWithTimeout(url, options = {}, timeout = 30000) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
+      
+      try {
+        const response = await fetch(url, {
+          ...options,
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        return response;
+      } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
+      }
+    }
+
+    // URL থেকে ইউজার ডেটা পড়ার ফাংশন (থিম সহ)
+    function getUserFromURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const userStr = urlParams.get("user");
+      
+      if (!userStr) {
+        console.log("No user data found in URL");
+        return null;
+      }
+      
+      try {
+        const userData = JSON.parse(decodeURIComponent(userStr));
+        
+        // থিম অটো অ্যাপ্লাই করুন
+        if (userData.theme === 'dark') {
+          document.body.classList.add('dark-mode');
+        } else {
+          document.body.classList.remove('dark-mode');
+        }
+        
+        return userData;
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        return null;
+      }
+    }
+
+    // Firebase-এ ডেটা সেভ করার ফাংশন
+    function saveToFirebase(formData) {
+      const database = firebase.database();
+      const newSubmissionRef = database.ref('submissions').push();
+      return newSubmissionRef.set(formData);
+    }
+
+    // DOM লোড হলে ইউজার ডেটা অটো-ফিল করুন
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = getUserFromURL();
+      
+      if (user) {
+        document.getElementById('tg-username').value = user.username ? '@' + user.username : '';
+        document.getElementById('tg-chat-id').value = user.id || '';
+        window.userData = user;
+      } else {
+        document.getElementById('tg-username').value = '@username';
+        document.getElementById('tg-chat-id').value = '';
+      }
+    });
+
+    // কাস্টম এলার্ট ফাংশন
+    function showAlert(message) {
+      const alertBox = document.getElementById("custom-alert");
+      const alertMessage = document.getElementById("alert-message");
+      
+      alertMessage.textContent = message;
+      alertBox.style.display = "flex";
+    }
+
+    document.getElementById("alert-ok").addEventListener("click", function () {
+      document.getElementById("custom-alert").style.display = "none";
+    });
+
+    // গো ব্যাক ফাংশন
+    function goBack() {
+      window.history.back();
+    }
+
+    // ফর্ম ভ্যালিডেশন এবং সাবমিশন
+    document.getElementById("account-type").addEventListener("change", function () { 
+      const accountType = this.value.toLowerCase(); 
+      const mailBox = document.getElementById("mail-box"); 
+      const cookie2fa = document.getElementById("2fa-cookie"); 
+      const fdType = document.getElementById("fd-type");
+
+      mailBox.disabled = false;
+      mailBox.required = true;
+      cookie2fa.disabled = false;
+      cookie2fa.required = true;
+      fdType.disabled = false;
+      fdType.required = true;
+
+      if (cookie2fa.value === "Cookies") {
+          fdType.disabled = true;
+          fdType.value = "";
+      } else {
+          fdType.disabled = false;
+      }
+    });
+
+    document.getElementById("2fa-cookie").addEventListener("change", function () { 
+      const fdType = document.getElementById("fd-type"); 
+      if (this.value === "Cookies") { 
+          fdType.disabled = true; 
+          fdType.value = ""; 
+      } else { 
+          fdType.disabled = false; 
+      }
+    });
+
+    document.getElementById("submit-btn").addEventListener("click", async function () { 
+      const accountType = document.getElementById("account-type").value; 
+      const mailBox = document.getElementById("mail-box").value || " "; 
+      const cookie2fa = document.getElementById("2fa-cookie").value.trim();
+      const fdType = document.getElementById("fd-type").value || " "; 
+      const ttlId = document.getElementById("ttl-id").value; 
+      const tgUsername = document.getElementById("tg-username").value.trim();
+      const tgChatId = document.getElementById("tg-chat-id").value; 
+      const googleSheet = document.getElementById("google-sheet").value;
+
+      // শুধুমাত্র @ চেক করা
+      if (!tgUsername.startsWith("@")) {
+          showAlert(" অবশ্যই প্রথমে '@' দিতে হবে। ");
+          return;
+      }
+
+      const requiredFields = [
+          { value: accountType, name: "Account Type" },
+          { value: cookie2fa, name: "2FA/Cookies" },
+          { value: ttlId, name: "Ttl Id" },
+          { value: tgUsername, name: "Tg Username" },
+          { value: tgChatId, name: "Tg Chat Id" },
+          { value: googleSheet, name: "Google Sheet Link" }
+      ];
+
+      for (const field of requiredFields) {
+          if (!field.value || field.value === "Select") {
+              showAlert(`Please fill out the ${field.name}.`);
+              return;
+          }
+      }
+
+      if (!/^\d{1,4}$/.test(ttlId)) {
+          showAlert("Ttl Id must be between 1 and 4 digits.");
+          return;
+      }
+
+      if (!/^\d{9,10}$/.test(tgChatId)) {
+          showAlert("Ttg Chat Id must be 9 or 10 digits.");
+          return;
+      }
+
+      const sheetLinkRegex = /^https?:\/\/(docs\.google\.com\/spreadsheets\/.+)/;
+      if (!sheetLinkRegex.test(googleSheet)) {
+          showAlert("Please enter a valid Google Sheet link.");
+          return;
+      }
+
+      let chatIdForBot;
+
+      if (cookie2fa === "Cookies") {
+          chatIdForBot = "-1002654345940";
+      } else if (cookie2fa === "2FA" &&  fdType === "30FD") {
+          chatIdForBot = "-1002654345940";
+      } else if (cookie2fa === "2FA" &&  fdType === "0FD") {
+          chatIdForBot = "-1002654345940";
+      } else if (cookie2fa === "2FA" &&  fdType === "10FD") {
+          chatIdForBot = "-1002654345940";
+      } else {
+          showAlert("সঠিকভাবে 2FA বা Cookies সিলেক্ট করুন।");
+          return;
+      }
+
+      const options = { 
+          timeZone: "Asia/Dhaka", 
+          day: "2-digit", 
+          month: "2-digit", 
+          year: "numeric",
+          hour: "2-digit", 
+          minute: "2-digit", 
+          second: "2-digit",
+          hour12: true 
+      };
+      const currentDate = new Date().toLocaleString("en-GB", options).replace(",", "");
+
+      // আপডেটেড মেসেজ ফরম্যাট
+      const message = `
+✅ নতুন ফর্ম সাবমিশন
+
+📋 অ্যাকাউন্ট বিবরণ:
+• AccType: ${accountType}
+• Mbox: ${mailBox}
+• 2FA/Cook: ${cookie2fa}
+• fType: ${fdType}
+
+• uName: ${tgUsername}
+• UID: ${tgChatId}
+• tID: ${ttlId}
+
+📎 fLink: ${googleSheet}
+
+🕐 D&T ${currentDate}
+      `;
+
+      const botToken = "7673657711:AAG9aHlpI8_Egvwi0fY9rxA4qyEfqOw16nU";
+      const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatIdForBot}&text=${encodeURIComponent(message)}`;
+
+      const submitBtn = document.getElementById("submit-btn");
+      const originalText = submitBtn.textContent;
+      
+      // লোডিং স্টেট সেট করুন
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<div class="loading-spinner"></div> Submitting...';
+
+      // Firebase-এ ডাটা সেভ করার জন্য প্রস্তুত
+      const formData = {
+        accountType: accountType,
+        mailBox: mailBox,
+        cookie2fa: cookie2fa,
+        fdType: fdType,
+        ttlId: ttlId,
+        tgUsername: tgUsername,
+        tgChatId: tgChatId,
+        googleSheet: googleSheet,
+        submissionTime: currentDate,
+        timestamp: new Date().getTime(),
+        telegramUserId: window.userData?.id || '',
+        telegramUsername: window.userData?.username || '',
+        theme: window.userData?.theme || 'light'
+      };
+
+      try {
+        // 1. Telegram API call - এখন টাইমআউট সহ
+        const response = await fetchWithTimeout(telegramUrl, {}, 30000);
+        const result = await response.json();
+        
+        if (response.status >= 200 && response.status < 300) {
+          console.log("Telegram API Success:", result);
+          
+          // 2. Firebase-এ ডাটা সেভ করুন
+          await saveToFirebase(formData);
+          console.log("Data saved to Firebase successfully");
+          
+          // 3. ইউজারকে মেসেজ পাঠান
+          await sendReadyMadeMessageToUser(tgChatId);
+          
+          // সিলেকশন অনুযায়ী রিডাইরেক্ট URL নির্ধারণ
+          let redirectPage = "success.html";
+          
+          if (cookie2fa === "Cookies") {
+              redirectPage = "success/fb-success-cookies.html";
+          } else if (cookie2fa === "2FA" && fdType === "30FD") {
+              redirectPage = "success/fb-success-30fd.html";
+          } else if (cookie2fa === "2FA" && fdType === "0FD") {
+              redirectPage = "success/fb-success-0fd.html";
+          } else if (cookie2fa === "2FA" && fdType === "10FD") {
+              redirectPage = "success/fb-success-10fd.html";
+          }
+
+          const successData = {
+              profilePicture: window.userData?.photo_url || "",
+              userName: (window.userData?.first_name || "") + " " + (window.userData?.last_name || ""),
+              userUsername: window.userData?.username ? '@' + window.userData.username : '',
+              chatId: window.userData?.id || tgChatId,
+              theme: window.userData?.theme || 'light'
+          };
+
+          const encodedData = encodeURIComponent(JSON.stringify(successData));
+          
+          setTimeout(() => {
+              window.location.href = `${redirectPage}?data=${encodedData}`;
+          }, 1000);
+
+        } else {
+          console.error("Telegram API Error:", result);
+          showAlert(`Failed: ${result.description || 'Telegram API তে সমস্যা হচ্ছে।'}`);
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      } catch (error) {
+        console.error("Network or Other Error:", error);
+        
+        if (error.name === 'AbortError') {
+          showAlert("Request timeout. Please check your connection and try again.");
+        } else {
+          showAlert("Failed to send data. Please check your network and try again.");
+        }
+        
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    });
+
+    function sendReadyMadeMessageToUser(tgChatId) {
+        const botToken = "7673657711:AAG9aHlpI8_Egvwi0fY9rxA4qyEfqOw16nU";
+
+        const today = new Date().toLocaleString("en-GB", {
+            timeZone: "Asia/Dhaka",
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true
+        });
+
+        const mediaUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7TresD68j1z7kGLxwCZwyxX9D2tg_iC5tuUQOnbPpOwTNcRICz91oFLCLP3bzBhIzXKt7sGDSAZC5HvpKvcFjaHhefNIndTl6uGgw7BUh5aN8XD1d2YJs0wol1tfWDIidivg4Fjls0vKLJF-91rPLrEYdJ7v_ZN3VHg2_Y8FQ12a1el9232IgTimTZD0V/s1280/wssfl.png";
+
+        const caption = `Submit Successful 💐 \n\nআপনার কাজ সফল ভাবে জমা করা হয়েছে। \n\nআপনার কাজের রিপোর্ট জানতে অবশ্যই আমাদের গ্রূপে যুক্ত থাকুন এবং যেকোনো সমস্যার সমাধান নিন।   \n\nতারিখ: ${today}`;
+
+        const replyMarkup = {
+            inline_keyboard: [[
+                {
+                    text: "Join Group",
+                    url: "https://t.me/fbmMarket"
+                }
+            ]]
+        };
+
+        const apiUrl = `https://api.telegram.org/bot${botToken}/sendPhoto`;
+
+        const formData = {
+            chat_id: tgChatId,
+            photo: mediaUrl,
+            caption: caption,
+            reply_markup: JSON.stringify(replyMarkup),
+            parse_mode: "HTML"
+        };
+
+        // এখানেও টাইমআউট ব্যবহার করুন
+        return fetchWithTimeout(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        }, 30000)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.ok) {
+                console.error("Failed to send media message:", data);
+            }
+        })
+        .catch(err => {
+            console.error("Error sending media message:", err);
+        });
+    }
+  </script>
+</body>
+</html>
