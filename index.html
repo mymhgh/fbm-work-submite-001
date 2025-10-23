@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Work</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #8b5cf6;
+      --accent: #06d6a0;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      --radius: 16px;
+      --important-color: #ef4444;
+      --later-color: #10b981;
+      --pbdr: #f59e0b;
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .dark-mode {
+      --text: #f1f5f9;
+      --text-light: #94a3b8;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      transition: all 0.3s ease;
+      min-height: 100vh;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    /* Header with User Profile - NexaWallet Style */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      margin-bottom: 20px;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex: 1;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 15px;
+      box-shadow: var(--shadow);
+    }
+
+    .profile-image-container {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .profile-picture {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--pbdr);
+    }
+
+    .user-info {
+      flex-grow: 1;
+      min-width: 0;
+    }
+
+    .user-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+
+    .user-username {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+
+    /* Video Card - NexaWallet Style */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 0;
+      margin-bottom: 20px;
+      transition: var(--transition);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+
+    .video-thumbnail {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70px;
+      height: 70px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .play-button:hover {
+      background: rgba(0, 0, 0, 0.9);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .play-button i {
+      color: white;
+      font-size: 28px;
+      margin-left: 4px;
+    }
+
+    /* Video Popup Modal */
+    .video-popup-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .video-popup-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 95%;
+      height: 80%;
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+
+    .video-popup-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .close-popup {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 40px;
+      height: 40px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1001;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      transition: var(--transition);
+    }
+
+    .close-popup:hover {
+      background: rgba(0, 0, 0, 0.9);
+      transform: scale(1.1);
+    }
+
+    /* Important Notice Section */
+    .important {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--important-color);
+    }
+
+    .highlight-item {
+      padding: 0;
+    }
+
+    .highlight-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text);
+      font-size: 1.1rem;
+    }
+
+    .highlight-meta {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    /* Social Platforms Section */
+    .social-section {
+      margin: 30px 0;
+    }
+
+    .social-title {
+      font-size: 1.3rem;
+      margin-bottom: 25px;
+      color: var(--primary);
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .social-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .social-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .social-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      flex: 1;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 15px 10px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .social-item:hover {
+      transform: translateY(-5px);
+      background: var(--primary);
+    }
+
+    .social-item:hover .social-name {
+      color: white;
+    }
+
+    .social-item:hover .social-icon {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .social-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      transition: var(--transition);
+      margin-bottom: 10px;
+    }
+
+    .social-logo {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      transition: var(--transition);
+      pointer-events: none;
+    }
+
+    .social-name {
+      font-size: 0.8rem;
+      color: var(--text);
+      font-weight: 500;
+      text-align: center;
+      transition: var(--transition);
+      pointer-events: none;
+    }
+
+    .version {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.8rem;
+      color: var(--text-light);
+      opacity: 0.7;
+    }
+
+    /* Toast Notification - NexaWallet Style */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--card);
+      color: var(--text);
+      padding: 15px 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      transform: translateX(150%);
+      transition: transform 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast i {
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header with User Profile (No Theme Toggle) -->
+    <header>
+      <div class="user-profile fade-in">
+        <div class="profile-image-container">
+          <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Profile" class="profile-picture" id="profilePicture">
+          <!-- Verified badge removed as requested -->
+        </div>
+        <div class="user-info">
+          <h2 class="user-name" id="userName">User Full Name</h2>
+          <p class="user-username" id="userUsername">@username</p>
+        </div>
+      </div>
+      <!-- Theme toggle button removed as requested -->
+    </header>
+
+    <!-- Video Section -->
+    <div class="card fade-in" id="videoCard">
+      <div class="video-container">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGulVYznuO3AIXARkY4ta9Apteso_iDrlWyeOTrcP5cnf2WlmmBz8Pnpytk9HCo82yDdwPUs9DuEn15Z4g9jC9mnGhAeMrFMo9wju_OOjQxf_YRJLSmpnHSjEGKuM5tBOSRq4ccze-8q4/s16000/youtubethumbnaildownloader.png" alt="Video Thumbnail" class="video-thumbnail">
+        <div class="play-button">
+          <i class="fas fa-play"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Popup Modal -->
+    <div class="video-popup-modal" id="videoPopupModal">
+      <div class="video-popup-content">
+        <iframe class="video-popup-iframe" id="videoPopupIframe" src="about:blank" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <button class="close-popup" id="closePopup">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Important Notice Section -->
+    <div class="important fade-in">
+      <div class="highlight-item">
+        <div class="highlight-title">📌 নোটিশ</div>
+        <div class="highlight-meta">
+          <span>কাজ জমা দিতে না জানলে উপরের ভিডিওটি দেখুন এবং যেকোনো সমস্যায় আমাদের সাথে যোগাযোগ করুন।</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Social Platforms Section -->
+    <div class="social-section">
+      <h4 class="social-title fade-in">Submit preferred Work!</h4>
+      <div class="social-rows">
+        
+        <!-- First Row -->
+        <div class="social-row">
+          <a id="facebook" href="work-submite-form/facebook/index.html" target="_self" class="social-item fade-in" data-platform="facebook">
+            <div class="social-icon">
+              <img src="work-img/facebook.png" alt="Facebook" class="social-logo">
+            </div>
+            <span class="social-name">Facebook</span>
+          </a>
+          <a id="instagram" href="work-submite-form/instagram/index.html" target="_self" class="social-item fade-in" data-platform="instagram">
+            <div class="social-icon">
+              <img src="work-img/instagram.png" alt="Instagram" class="social-logo">
+            </div>
+            <span class="social-name">Instagram</span>
+          </a>
+          <a id="talkatone" href="error/error.html" target="_self" class="social-item fade-in" data-platform="talkatone">
+            <div class="social-icon">
+              <img src="work-img/talkatone.jpg" alt="Talkatone" class="social-logo">
+            </div>
+            <span class="social-name">Talkatone</span>
+          </a>
+        </div>
+
+        <!-- Second Row -->
+        <div class="social-row">
+          <a id="deltaforce" href="error/error.html" target="_self" class="social-item fade-in" data-platform="deltaforce">
+            <div class="social-icon">
+              <img src="work-img/delta-force.webp" alt="Delta Force" class="social-logo">
+            </div>
+            <span class="social-name">Delta Force</span>
+          </a>
+          <a id="linkedin" href="error/error.html" target="_self" class="social-item fade-in" data-platform="linkedin">
+            <div class="social-icon">
+              <img src="work-img/linkedin.png" alt="LinkedIn" class="social-logo">
+            </div>
+            <span class="social-name">Linkedin</span>
+          </a>
+          <a id="gmail" class="social-item fade-in" data-platform="gmail" href="error/error.html" target="_self">
+            <div class="social-icon">
+              <img src="work-img/gmail.png" alt="Gmail" class="social-logo">
+            </div>
+            <span class="social-name">Gmail</span>
+          </a>
+        </div>
+
+        <!-- Third Row -->
+        <div class="social-row">
+          <a id="twitter" href="error/error.html" target="_self" class="social-item fade-in" data-platform="twitter">
+            <div class="social-icon">
+              <img src="work-img/twitter.png" alt="Twitter" class="social-logo">
+            </div>
+            <span class="social-name">Twitter</span>
+          </a>
+          <a id="rednote" href="error/error.html" target="_self" class="social-item fade-in" data-platform="rednote">
+            <div class="social-icon">
+              <img src="work-img/rednote.png" alt="Rednote" class="social-logo">
+            </div>
+            <span class="social-name">Rednote</span>
+          </a>
+          <a id="snapchat" class="social-item fade-in" data-platform="snapchat" href="error/error.html" target="_self">
+            <div class="social-icon">
+              <img src="work-img/snapchat.jpeg" alt="SnapChat" class="social-logo">
+            </div>
+            <span class="social-name">SnapChat</span>
+          </a> 
+        </div>
+
+        <!-- Fourth Row -->
+        <div class="social-row">
+          <a id="wechat" href="error/error.html" target="_self" class="social-item fade-in" data-platform="WeChat">
+            <div class="social-icon">
+              <img src="work-img/wechat.jpeg" alt="WeChat" class="social-logo">
+            </div>
+            <span class="social-name">WeChat</span>
+          </a>
+          <a id="tumblr" href="error/error.html" target="_self" class="social-item fade-in" data-platform="tumblr">
+            <div class="social-icon">
+              <img src="work-img/tumblr.png" alt="Tumblr" class="social-logo">
+            </div>
+            <span class="social-name">Tumblr</span>
+          </a>
+          <a id="qq" class="social-item fade-in" data-platform="qq" href="error/error.html" target="_self">
+            <div class="social-icon">
+              <img src="work-img/qq.png" alt="QQ" class="social-logo">
+            </div>
+            <span class="social-name">QQ</span>
+          </a>
+        </div>
+
+        <!-- Fifth Row -->
+        <div class="social-row">
+          <a id="reddit" href="error/error.html" target="_self" class="social-item fade-in" data-platform="Reddit">
+            <div class="social-icon">
+              <img src="work-img/reddit.jpeg" alt="Reddit" class="social-logo">
+            </div>
+            <span class="social-name">Reddit</span>
+          </a>
+          <a id="pinterest" href="error/error.html" target="_self" class="social-item fade-in" data-platform="Pinterest">
+            <div class="social-icon">
+              <img src="work-img/pinterest.png" alt="Pinterest" class="social-logo">
+            </div>
+            <span class="social-name">Pinterest</span>
+          </a>
+          <a id="tiktok" class="social-item fade-in" data-platform="tiktok" href="error/error.html" target="_self">
+            <div class="social-icon">
+              <img src="work-img/tiktok.png" alt="Tiktok" class="social-logo">
+            </div>
+            <span class="social-name">Tiktok</span>
+          </a>
+        </div>
+
+        <!-- Sixth Row -->
+        <div class="social-row">
+          <a id="line" href="error/error.html" target="_self" class="social-item fade-in" data-platform="line">
+            <div class="social-icon">
+              <img src="work-img/line.png" alt="Line" class="social-logo">
+            </div>
+            <span class="social-name">Line</span>
+          </a>
+          <div class="social-item" style="visibility: hidden;"></div>
+          <div class="social-item" style="visibility: hidden;"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="version fade-in">V7.947</div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Welcome to Work Submit!</span>
+  </div>
+
+  <script>
+    // Get current theme
+    function getCurrentTheme() {
+      return document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+    }
+
+    // Telegram user data থেকে সম্পূর্ণ user object পাঠানো (with theme)
+    function updateSocialLinksWithTheme() {
+      let encodedUser = '';
+      if (typeof window.Telegram !== 'undefined' && window.Telegram.WebApp) {
+        const user = window.Telegram.WebApp.initDataUnsafe.user;
+        if (user) {
+          // সম্পূর্ণ user object JSON হিসেবে encode করুন (with theme)
+          const userData = {
+            id: user.id,
+            username: user.username,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            photo_url: user.photo_url,
+            theme: getCurrentTheme() // Add current theme to user data
+          };
+          encodedUser = encodeURIComponent(JSON.stringify(userData));
+        }
+      } else {
+        // Fallback for testing
+        const userData = {
+          id: 123456789,
+          username: 'demo_user',
+          first_name: 'Demo',
+          last_name: 'User',
+          photo_url: null,
+          theme: getCurrentTheme() // Add current theme to user data
+        };
+        encodedUser = encodeURIComponent(JSON.stringify(userData));
+      }
+
+      // Update all social links with user data including theme
+      document.querySelectorAll('.social-item').forEach(item => {
+        const originalHref = item.getAttribute('href');
+        if (originalHref && !originalHref.includes('?')) {
+          item.href = originalHref + '?user=' + encodedUser;
+        } else if (originalHref && originalHref.includes('?')) {
+          item.href = originalHref + '&user=' + encodedUser;
+        }
+      });
+    }
+
+    // DOM Elements
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    const videoCard = document.getElementById('videoCard');
+    const videoPopupModal = document.getElementById('videoPopupModal');
+    const videoPopupIframe = document.getElementById('videoPopupIframe');
+    const closePopup = document.getElementById('closePopup');
+
+    // Video Popup Functionality
+    videoCard.addEventListener('click', function() {
+      // Set the video URL for popup (replace with your target link)
+      const videoUrl = "https://www.youtube.com/embed/y7IkxeXxowA?si=3S-L1gcwamC4DKHa&autoplay=1";
+      videoPopupIframe.src = videoUrl;
+      videoPopupModal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      showToast('Opening video tutorial');
+    });
+
+    // Close popup functionality
+    closePopup.addEventListener('click', function() {
+      videoPopupModal.style.display = 'none';
+      videoPopupIframe.src = 'about:blank';
+      document.body.style.overflow = 'auto';
+    });
+
+    // Close popup when clicking outside content
+    videoPopupModal.addEventListener('click', function(e) {
+      if (e.target === videoPopupModal) {
+        videoPopupModal.style.display = 'none';
+        videoPopupIframe.src = 'about:blank';
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    // Handle social link clicks (prevent link preview on long press)
+    document.querySelectorAll('.social-item').forEach(function(link) {
+      // Prevent context menu (long press on mobile)
+      link.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+      });
+      
+      // Prevent text selection
+      link.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+      });
+      
+      // Handle normal click
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const platform = this.getAttribute('data-platform');
+        const linkUrl = this.getAttribute('href');
+        const target = this.getAttribute('target');
+        
+        showToast('Opening ' + platform);
+        
+        setTimeout(function() {
+          window.open(linkUrl, target);
+        }, 500);
+      });
+    });
+
+    // Toast Notification Function
+    function showToast(message) {
+        toastMessage.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    // Telegram WebApp integration for user data
+    function initTelegramUserData() {
+      // Check if Telegram WebApp API is available
+      if (typeof window.Telegram !== 'undefined' && window.Telegram.WebApp) {
+        try {
+          console.log("Telegram WebApp initialized");
+          const tg = window.Telegram.WebApp;
+          
+          // Expand the WebApp to full height
+          tg.expand();
+          
+          // Enable closing confirmation
+          tg.enableClosingConfirmation();
+          
+          // Get user data
+          const user = tg.initDataUnsafe.user;
+          
+          if (user) {
+            console.log("User data:", user);
+            
+            // Update profile picture
+            if (user.photo_url) {
+              document.getElementById('profilePicture').src = user.photo_url;
+            }
+            
+            // Update user name
+            let fullName = '';
+            if (user.first_name) fullName += user.first_name;
+            if (user.last_name) fullName += ' ' + user.last_name;
+            if (fullName.trim() !== '') {
+              document.getElementById('userName').textContent = fullName.trim();
+            } else {
+              document.getElementById('userName').textContent = 'Telegram User';
+            }
+            
+            // Update username
+            if (user.username) {
+              document.getElementById('userUsername').textContent = '@' + user.username;
+            } else {
+              document.getElementById('userUsername').textContent = 'Telegram User';
+            }
+          } else {
+            console.log("No user data available");
+            document.getElementById('userName').textContent = 'Telegram User';
+            document.getElementById('userUsername').textContent = 'User';
+          }
+          
+          // Update social links with user data and theme
+          updateSocialLinksWithTheme();
+          
+        } catch (error) {
+          console.error("Error initializing Telegram WebApp:", error);
+          document.getElementById('userName').textContent = 'Error Loading';
+          document.getElementById('userUsername').textContent = 'Please try again';
+        }
+      } else {
+        // Fallback for testing outside Telegram
+        console.log("Telegram WebApp API not detected. Using mock data.");
+        document.getElementById('userName').textContent = 'Demo User';
+        document.getElementById('userUsername').textContent = '@demo_user';
+        
+        // Update social links with mock data and theme
+        updateSocialLinksWithTheme();
+      }
+    }
+
+    // Check for saved theme preference (hidden from user)
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+      if (savedDarkMode) {
+        document.body.classList.add('dark-mode');
+      }
+      
+      initTelegramUserData();
+      
+      setTimeout(() => {
+        showToast('Welcome to Work Submit!');
+      }, 1000);
+    });
+
+    // Update social links when theme changes (even though toggle is hidden)
+    // This ensures theme data is always current in URLs
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+          updateSocialLinksWithTheme();
+        }
+      });
+    });
+    
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  </script>
+</body>
+</html>
